@@ -17,5 +17,5 @@ class MovieSchema(Schema):
     trailer = fields.String()
     year = fields.Integer()
     rating = fields.Float()
-    genre_id = fields.Integer()
-    director_id = fields.Integer()
+    genre = fields.Pluck(GenreSchema, 'name')
+    director = fields.Pluck(DirectorSchema, 'name')

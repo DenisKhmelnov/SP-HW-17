@@ -1,5 +1,5 @@
 # app.py
-
+from flask import request
 from flask_restx import Api, Resource
 from config import app
 from models import Movie
@@ -14,7 +14,14 @@ directors_ns = api.namespace('directors')
 @movies_ns.route('/')
 class MoviesView(Resource):
     def get(self):
-        movies = Movie.query.all()
+        director_id = request.args.get('director_id')
+        genre_id = request.args.get('genre_id')
+        query = Movie.query
+        if director_id:
+            query = query.filter(Movie.director_id == director_id)
+        if genre_id:
+            query = query.filter(Movie.genre_id == genre_id)
+        movies = query.all()
         result = MovieSchema(many=True).dump(movies)
         return result, 200
 
