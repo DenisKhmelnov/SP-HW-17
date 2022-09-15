@@ -14,16 +14,19 @@ directors_ns = api.namespace('directors')
 @movies_ns.route('/')
 class MoviesView(Resource):
     def get(self):
-        director_id = request.args.get('director_id')
-        genre_id = request.args.get('genre_id')
-        query = Movie.query
-        if director_id:
-            query = query.filter(Movie.director_id == director_id)
-        if genre_id:
-            query = query.filter(Movie.genre_id == genre_id)
-        movies = query.all()
-        result = MovieSchema(many=True).dump(movies)
-        return result, 200
+        try:
+            director_id = request.args.get('director_id')
+            genre_id = request.args.get('genre_id')
+            query = Movie.query
+            if director_id:
+                query = query.filter(Movie.director_id == director_id)
+            if genre_id:
+                query = query.filter(Movie.genre_id == genre_id)
+            movies = query.all()
+            result = MovieSchema(many=True).dump(movies)
+            return result, 200
+        except Exception as e:
+            return e, 500
 
     def post(self):
         req_json = request.json
@@ -35,9 +38,12 @@ class MoviesView(Resource):
 @movies_ns.route('/<int:mid>')
 class MovieView(Resource):
     def get(self, mid):
-        movie = Movie.query.get(mid)
-        result = MovieSchema(many=False).dump(movie)
-        return result, 200
+        try:
+            movie = Movie.query.get(mid)
+            result = MovieSchema(many=False).dump(movie)
+            return result, 200
+        except Exception as e:
+            return e, 500
 
     def put(self, mid):
         req_json = request.json
@@ -63,9 +69,12 @@ class MovieView(Resource):
 @directors_ns.route('/')
 class DirectorsView(Resource):
     def get(self):
-        direcors = Director.query.all()
-        result = DirectorSchema(many=True).dump(direcors)
-        return result, 200
+        try:
+            direcors = Director.query.all()
+            result = DirectorSchema(many=True).dump(direcors)
+            return result, 200
+        except Exception as e:
+            return e, 500
 
     def post(self):
         req_json = request.json
@@ -77,9 +86,12 @@ class DirectorsView(Resource):
 @directors_ns.route('/<int:did>')
 class DirectorView(Resource):
     def get(self, did):
-        director = Director.query.get(did)
-        result = DirectorSchema(many=False).dump(director)
-        return result, 200
+        try:
+            director = Director.query.get(did)
+            result = DirectorSchema(many=False).dump(director)
+            return result, 200
+        except Exception as e:
+            return e, 500
 
     def put(self, did):
         req_json = request.json
@@ -98,9 +110,12 @@ class DirectorView(Resource):
 @genres_ns.route('/')
 class GenresView(Resource):
     def get(self):
-        genres = Genre.query.all()
-        result = GenreSchema(many=True).dump(genres)
-        return result, 200
+        try:
+            genres = Genre.query.all()
+            result = GenreSchema(many=True).dump(genres)
+            return result, 200
+        except Exception as e:
+            return e, 500
 
     def post(self):
         req_json = request.json
@@ -112,9 +127,12 @@ class GenresView(Resource):
 @genres_ns.route('/<int:gid>')
 class GenreView(Resource):
     def get(self, gid):
-        genre = Genre.query.get(gid)
-        result = GenreSchema(many=False).dump(genre)
-        return result, 200
+        try:
+            genre = Genre.query.get(gid)
+            result = GenreSchema(many=False).dump(genre)
+            return result, 200
+        except Exception as e:
+            return e, 500
 
     def put(self, gid):
         req_json = request.json
